@@ -1,6 +1,6 @@
 import tkinter
 import requests
-
+import json
 
 def RequestUserInfo(user):
     ratingHistory = requests.get("https://codeforces.com/api/user.rating?handle=" + user)
@@ -11,5 +11,10 @@ def RequestUserInfo(user):
 if __name__ == "__main__":
     print("Enter username: ")
     user = input()
-    (ratingHistory, userSubmissions) = RequestUserInfo(user)
-    print(ratingHistory.content)
+    (ratingBytes, userSubmissionsBytes) = RequestUserInfo(user)
+    ratingHistoryString = ratingBytes.content.decode('utf8').replace("'", '"')
+    userSubmissionsString = userSubmissionsBytes.content.decode('utf8').replace("'", '"')
+
+    print(json.dumps(ratingHistoryString, sort_keys=True, indent=4))
+    print("submissions")
+    print(json.dumps(userSubmissionsString, sort_keys=True, indent=4))
