@@ -14,7 +14,5 @@ if __name__ == "__main__":
     (ratingBytes, userSubmissionsBytes) = RequestUserInfo(user)
     ratingHistoryString = ratingBytes.content.decode('utf8').replace("'", '"')
     userSubmissionsString = userSubmissionsBytes.content.decode('utf8').replace("'", '"')
-
-    print(json.dumps(ratingHistoryString, sort_keys=True, indent=4))
-    print("submissions")
-    print(json.dumps(userSubmissionsString, sort_keys=True, indent=4))
+    output = open("test.txt", "a")
+    output.write(ratingHistoryString)
