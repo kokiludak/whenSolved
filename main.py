@@ -14,5 +14,13 @@ if __name__ == "__main__":
     (ratingBytes, userSubmissionsBytes) = RequestUserInfo(user)
     ratingHistoryString = ratingBytes.content.decode('utf8').replace("'", '"')
     userSubmissionsString = userSubmissionsBytes.content.decode('utf8').replace("'", '"')
-    output = open("test.txt", "a")
-    output.write(ratingHistoryString)
+
+    ratingHistoryJson = json.loads(ratingHistoryString)
+    userSubmissionsJson = json.loads(userSubmissionsString)
+
+    ratingHistory = ratingHistoryJson.get("result", [])
+    userSubmissions = userSubmissionsJson.get("result", [])
+    print(userSubmissions)
+
+    scanline = [(entry['ratingUpdateTimeSeconds'], entry['newRating']) for entry in ratingHistory  if 'ratingUpdateTimeSeconds' in entry and 'newRating' in entry]
+    print(scanline)
