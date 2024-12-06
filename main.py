@@ -20,7 +20,19 @@ if __name__ == "__main__":
 
     ratingHistory = ratingHistoryJson.get("result", [])
     userSubmissions = userSubmissionsJson.get("result", [])
-    print(userSubmissions)
 
     scanline = [(entry['ratingUpdateTimeSeconds'], entry['newRating']) for entry in ratingHistory  if 'ratingUpdateTimeSeconds' in entry and 'newRating' in entry]
+    submissions = [
+    (entry['creationTimeSeconds'], str(entry['problem']['contestId']) + entry['problem']['index'])
+    for entry in userSubmissions
+    if (
+        'creationTimeSeconds' in entry and
+        'problem' in entry and 
+        'contestId' in entry['problem'] and 
+        'index' in entry['problem'] and 
+        entry.get('verdict') == 'OK'  # Filter by verdict
+    )
+    ]
+    scanline.extend(submissions)
+    scanline.sort()
     print(scanline)
